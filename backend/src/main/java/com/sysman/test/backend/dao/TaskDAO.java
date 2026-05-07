@@ -13,34 +13,36 @@ import java.util.List;
 public class TaskDAO {
 
     public List<Task> getAllTasks() {
-
+        System.out.println("ANTES DE CONECTAR ORACLE");
         List<Task> tasks = new ArrayList<>();
 
         try (
+
                 Connection connection = DatabaseConnection.getConnection();
-                CallableStatement callableStatement = connection.prepareCall(
+
+                CallableStatement cs = connection.prepareCall(
                         "{ call TASK_PKG.GET_ALL_TASKS(?) }"
                 )
         ) {
 
-            callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+            cs.registerOutParameter(1, oracle.jdbc.OracleTypes.CURSOR);
 
-            callableStatement.execute();
+            cs.execute();
 
-            ResultSet rs = (ResultSet) callableStatement.getObject(1);
+            try (ResultSet rs = (ResultSet) cs.getObject(1)) {
 
-            while (rs.next()) {
+                while (rs.next()) {
+                    Task task = new Task();
 
-                Task task = new Task();
+                    task.setTaskId(rs.getLong("TASK_ID"));
+                    task.setTitle(rs.getString("TITLE"));
+                    task.setDescription(rs.getString("DESCRIPTION"));
+                    task.setCompleted(rs.getInt("COMPLETED"));
+                    task.setCreatedAt(rs.getTimestamp("CREATED_AT"));
+                    task.setUpdatedAt(rs.getTimestamp("UPDATED_AT"));
 
-                task.setTaskId(rs.getLong("TASK_ID"));
-                task.setTitle(rs.getString("TITLE"));
-                task.setDescription(rs.getString("DESCRIPTION"));
-                task.setCompleted(rs.getInt("COMPLETED"));
-                task.setCreatedAt(rs.getTimestamp("CREATED_AT"));
-                task.setUpdatedAt(rs.getTimestamp("UPDATED_AT"));
-
-                tasks.add(task);
+                    tasks.add(task);
+                }
             }
 
         } catch (Exception e) {
@@ -49,7 +51,6 @@ public class TaskDAO {
 
         return tasks;
     }
-
     public Task getTaskById(Long taskId) {
 
         Task task = null;

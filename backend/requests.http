@@ -1,0 +1,51 @@
+### Variables
+@host = http://localhost:8080
+@context = backend_war_exploded
+@baseUrl = {{host}}/{{context}}/api/tasks
+
+##################################################
+### Obtener todas las tareas
+##################################################
+
+GET {{baseUrl}}
+Accept: application/json
+
+##################################################
+### Obtener tarea por ID
+
+
+GET {{baseUrl}}/1
+Accept: application/json
+
+##################################################
+### Crear tarea
+##################################################
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "title": "Prueba tecnica",
+  "description": "Crear API REST con Jakarta EE",
+  "completed": 0
+}
+
+##################################################
+### Actualizar tarea
+##################################################
+
+PUT {{baseUrl}}/1
+Content-Type: application/json
+
+{
+  "title": "Prueba actualizada",
+  "description": "Actualizar tarea",
+  "completed": 1
+}
+
+##################################################
+### Eliminar tarea
+##################################################
+
+DELETE {{baseUrl}}/1
+Accept: application/json
