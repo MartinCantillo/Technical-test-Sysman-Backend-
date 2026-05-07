@@ -25,8 +25,8 @@ POST {{baseUrl}}
 Content-Type: application/json
 
 {
-  "title": "Prueba tecnica",
-  "description": "Crear API REST con Jakarta EE",
+  "title": "Prueba tecnica 2",
+  "description": "Crear API REST con Jakarta EE 2",
   "completed": 0
 }
 
