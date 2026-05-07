@@ -9,6 +9,7 @@ public class HelloResource {
     @GET
     @Produces("text/plain")
     public String hello() {
+        System.out.println(" ENDPOINT /hello-world llamado");
         return "Hello, World!";
     }
 }
